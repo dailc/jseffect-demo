@@ -1,0 +1,107 @@
+<!-- 
+        作者：dailc
+        时间：2016-11-12
+        描述：css3实现的瀑布流
+-->
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+	<head>
+		<meta charset="UTF-8">
+		<!-- 让国内基于webkit的浏览器默认采用webkit内核进行渲染 -->
+		<meta name="renderer" content="webkit" />
+		<!-- 移动端的响应式特性 -->
+		<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+		<meta content="css3,css,瀑布流,css效果" name="Keywords">
+		<meta content="css3实现瀑布流效果" name="description">
+		<title>css3瀑布流效果</title>
+		<link rel="stylesheet" href="../staticresource/css/reset.css" />
+		<style>
+	.container{
+		/*宽*/
+        -webkit-column-width:200px;
+        -moz-column-width:200px;
+        -o-colum-width:200px;
+        /*固定列*/
+        /*-moz-column-count:2; 
+		-webkit-column-count:2; 
+		column-count:2;*/
+        /*间距*/
+        -webkit-column-gap:1px;
+        -moz-column-gap:1px;
+        -o-column-gap:1px;
+    }
+     div:not(.container){
+     	/*可以试着把inline-block，和width去掉,然后看看效果*/
+     	display:inline-block;
+     	width: 160px;
+     	margin:5px;
+     	border::#CCC 1px solid;
+        
+     	background:#90EE90;
+    }
+    div img {
+    	max-width: 100%;
+    }
+		</style>
+	</head>
+
+	<body>
+		<button id="btn-switch">模式切换(两列模式与普通模式)</button>
+		<div class="container">
+			<div class="grid-item">
+			        <a class="demo-img" href="">
+			            <img src="https://dailc.github.io/staticResource/blog/hybrid/img_hybrid_base_hybridInfo_1.jpg">
+			        </a>
+			        <h3 class="demo-title">
+			            <a href="">Hybrid示例应用</a>
+			        </h3>
+			        <p>主要技术：js Hybrid模式</p>
+			        <p>混合开发，原生容器，h5+js进行业务功能开发，提升开发效率
+			            <a href="">源代码 <i class="icon icon-code" ></i></a>
+			        </p>
+			</div>
+			<div style="height:110px">110</div>
+		    <div style="height:120px">120</div>
+		    <div style="height:130px">130</div>
+		    <div style="height:140px">140</div>
+		    <div style="height:150px">150</div>
+		    <div style="height:160px">160</div>
+		    <div style="height:160px">170</div>
+		    <div style="height:160px">180</div>
+		    <div class="grid-item">
+			        <a class="demo-img" href="">
+			            <img src="https://dailc.github.io/staticResource/blog/hybrid/img_hybrid_base_hybridInfo_1.jpg">
+			        </a>
+			        <h3 class="demo-title">
+			            <a href="">Hybrid示例应用</a>
+			        </h3>
+			        <p>主要技术：js Hybrid模式</p>
+			        <p>混合开发，原生容器，h5+js进行业务功能开发，提升开发效率
+			            <a href="">源代码 <i class="icon icon-code" ></i></a>
+			        </p>
+			</div>
+		</div>	
+		<script>
+			//是否瀑布流为固定的两列形式(每一列可以单独有好几个item)
+			var isTowLine =false;
+			window.onload = function(){
+				var container = document.querySelector('.container');
+				document.getElementById('btn-switch').addEventListener('click',function(){
+					if(isTowLine){
+						container.style.columnCount = 'auto';
+						container.style.MozColumnCount = 'auto';
+						container.style.webkitColumnCount = 'auto';
+						isTowLine = false;
+					}else{
+						container.style.columnCount = 2;
+						container.style.MozColumnCount = 2;
+						container.style.webkitColumnCount = 2;
+						isTowLine = true;
+					}
+				});
+			};
+		</script>
+	</body>
+
+</html>
