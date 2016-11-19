@@ -31,7 +31,7 @@
 
 
 ## 相关博文
-[网页瀑布流效果实现的几种方式](http://www.jianshu.com/p/0398e5e78d8f)
+[网页瀑布流效果实现的几种方式](https://dailc.github.io/2016/11/13/waterflowEffect)
 
 ## License
 
