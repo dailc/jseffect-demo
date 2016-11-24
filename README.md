@@ -63,6 +63,8 @@ JS中几种常用数组遍历方式分析比较,包括for循环,for in，foreach
 ## 相关博文
 [网页瀑布流效果实现的几种方式](https://dailc.github.io/2016/11/13/waterflowEffect)
 
+[JS几种变量交换方式以及性能分析对比](http://dailc.github.io/2016/11/21/baseKnowlenge_javascript_exchangeValue)
+
 
 
 ## License
