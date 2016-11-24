@@ -76,10 +76,13 @@ sub, sup {position: relative;font-size: 75%;line-height: 0;vertical-align: basel
 sup {top: -.5em;}
 
 
-
+.ml10 {margin-left: 10px;}
 .mt40 {margin-top: 40px;}
 .mt60 {margin-top: 60px;}
 .mt66 {margin-top: 66px;}
 .mt70 {margin-top: 70px;}
 .mt80 {margin-top: 80px;}
 .mt120 {margin-top: 120px;}
+.block {
+	display: block;
+}

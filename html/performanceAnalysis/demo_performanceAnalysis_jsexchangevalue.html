@@ -1,0 +1,107 @@
+<!-- 
+        作者：dailc
+        时间：2016-11-21
+        描述：几种js数值对换方式的性能分析
+-->
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+	<head>
+		<meta charset="UTF-8">
+		<!-- 让国内基于webkit的浏览器默认采用webkit内核进行渲染 -->
+		<meta name="renderer" content="webkit" />
+		<!-- 移动端的响应式特性 -->
+		<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+		<meta content="js,数值交换,js应用,性能分析" name="Keywords">
+		<meta content="JS几种数值交换方式分析比较,包括tmp变量交换,加减法，异或，数组法等" name="description">
+		<title>JS几种数值交换方式分析比较</title>
+		<link rel="stylesheet" href="../../css/common/reset.css" />
+		<link rel="stylesheet" href="../../css/common/markdown_article.css" />
+		<link rel="stylesheet" href="../../css/performanceAnalysis/demo_performanceAnalysis_jsexchangevalue.css" />
+	</head>
+
+	<body>
+		<div class="markdown-body">
+			<div class="title-container">
+				<h1>Js中几种常用数值交换方式分析比较</h1>
+				<small>2016-11-21 版本:1.0</small>
+				<small>aurhor:dailc</small>
+
+				<h3>注意</h3>
+				<div class="attention-tions">
+					
+				</div>
+
+			</div>
+
+			<div class="runner-container">
+				<div class="select-container">
+					<span class="ml10">当前分析模式:</span>
+					<select class="exchange-type">
+
+					</select>
+					<select class="es6-support">
+						<option value="noes6">不支持es6</option>
+						<option value="es6">支持es6</option>
+					</select>
+					<div class="">
+						<span class="ml10">每次计算次数:</span>
+						<input id="per-run-count" type="number" placeholder="执行次数" value="1000000" />
+					</div>
+					<div class="">
+						<span class="ml10">一共执行循环:</span>
+						<input id="all-loop-count" type="number" placeholder="执行循环" value="100" />
+					</div>
+
+					<button id="btn-run" class="text-btn">执行测试</button>
+				</div>
+
+				<table id="test-table">
+					<caption></caption>
+					<thead>
+						<tr>
+							<th colspan="3">
+								<span class="block ">
+									代码前提:
+								</span>
+								<pre>
+									<code >
+										<span id="pre-code-tips" class="block">
+											
+										</span>
+									</code>
+								</pre>
+							</th>
+						</tr>
+						<tr class="title">
+							<th colspan="2">测试代码</th>
+							<th>性能分析</th>
+						</tr>
+
+					</thead>
+					<tbody id="run-code-content">
+
+					</tbody>
+				</table>
+			</div>
+			
+			
+			<nav class="nav-container">
+				<h2>系列相关文章:</h2>
+				<ul>
+					<li>
+						<a  href="http://dailc.github.io/performanceAnalysis/demo_performanceAnalysis_jsexchangevalue.html">JS几种数值交换方式分析比较</a>
+					</li>
+					<li>
+						<a  href="http://dailc.github.io/performanceAnalysis/demo_performanceAnalysis_jsarrayGoThrough.html">Js中几种常用数组遍历方式分析比较</a>
+					</li>
+				</ul>
+			</nav>
+		</div>
+
+		<script type="text/javascript" src="../../js/common/app.js"></script>
+		<script type="text/javascript" src="../../js/performanceAnalysis/PerformaceAnalysisLitemlate.js"></script>
+		<script type="text/javascript" src="../../js/performanceAnalysis/demo_performanceAnalysis_jsexchangevalue.js"></script>
+	</body>
+
+</html>

@@ -1,0 +1,89 @@
+/**
+ * js数值交换性能分析测试页面样式
+ * @author dailc
+ */
+html {
+	margin: 0;
+	padding: 0;
+}
+body {
+	margin: 0;
+	background: #ccc;
+}
+.markdown-body {
+	margin: 0 10%;
+	padding: 10px;
+}
+/*
+ * 表格相关
+ */
+.runner-container {
+	margin-top: 30px;
+	padding-top: 30px;
+	border-top: 1px solid rgb(204, 204, 204);
+}
+.runner-container table {
+	margin: auto;
+	max-width: 100%;
+	border-spacing: 0;
+	border-collapse: collapse
+}
+.runner-container table tr,
+.runner-container table td {
+	max-width: 100%;
+}
+.runner-container table tr,
+.runner-container table th,
+.runner-container table td,
+.runner-container table caption {
+	border: 1px solid #333;
+}
+
+.runner-container caption{
+	padding: 5px;
+	text-align: center;
+    color: rgb(85, 85, 85);
+    background: -webkit-linear-gradient(top, rgb(208, 208, 208), rgb(167, 167, 167)) rgb(188, 188, 188);
+}
+.runner-container thead .title{
+	background-color: #5595fa;
+}
+.runner-container th,
+.runner-container td:not(.code) {
+	padding: 5px;
+	text-align: center;
+} 
+.runner-container thead th {
+	padding: 0;	
+}
+.runner-container .select-container {
+	margin-bottom: 20px;
+	overflow: hidden;
+}
+.runner-container .select-container  .text-btn {
+	float: right;
+	padding: 5px;
+	font-size: 18px;
+}
+.runner-container .select-container  input {
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+.runner-container pre,
+.runner-container pre code {
+	margin: 0;
+	text-align: left;
+}
+.runner-container .fastest {
+	background: rgb(156, 238, 130);
+}
+.runner-container .fastest {
+	background: rgb(156, 238, 130);
+}
+.runner-container .slowest {
+	background: pink;
+}
+
+.nav-container {
+	margin-top: 100px;
+}
