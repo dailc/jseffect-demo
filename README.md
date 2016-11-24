@@ -13,18 +13,22 @@
 JS几种数值交换方式分析比较,包括tmp变量交换,加减法，异或，数组法等
 
 #### 效果图
+![](https://dailc.github.io/showDemo/staticresource/performanceAnalysis/demo_js_performanceAnalysis_jsexchangevalue_1.png)
+![](https://dailc.github.io/showDemo/staticresource/performanceAnalysis/demo_js_performanceAnalysis_jsexchangevalue_2.png)
+
 
 #### 示例页面
-[JS几种数值交换方式分析比较](http://dailc.github.io/showDemo/performanceAnalysis/demo_performanceAnalysis_jsexchangevalue.html)
+[JS几种数值交换方式分析比较](http://dailc.github.io/showDemo/html/performanceAnalysis/demo_performanceAnalysis_jsexchangevalue.html)
 
 
 ### 几种常用的数组遍历方式分析
 JS中几种常用数组遍历方式分析比较,包括for循环,for in，foreach，map法等
 
 #### 效果图
+![](https://dailc.github.io/showDemo/staticresource/performanceAnalysis/demo_js_performanceAnalysis_jsarrayGoThrough_1.png)
 
 #### 示例页面
-[JS中几种常用数组遍历方式分析比较](http://dailc.github.io/showDemo/performanceAnalysis/demo_performanceAnalysis_jsarrayGoThrough.html)
+[JS中几种常用数组遍历方式分析比较](http://dailc.github.io/html/showDemo/performanceAnalysis/demo_performanceAnalysis_jsarrayGoThrough.html)
 
 ## 瀑布流效果
 网页实现瀑布流效果的几种实现,包括
