@@ -32,9 +32,9 @@
 		 */
 		getCustomAttentionTips: function() {
 			//默认什么都不做
-			var html = '<p>es6下可以使用[a, b] = [b, a]方式(需要手动添加，默认是没有它的)</p>';
+			var html = '<p>es6下可以使用[a, b] = [b, a]方式(但是分析工具中默认把这段代码注释掉了)</p>';
 			html += '<p>其中的array模式，只是用来测试数组中元素调换的性能，和普通模式有区别</p>';		
-			html += '<p>eval模式由于太过于耗时，所以只允许执行次数小于10001次时出现</p>';		
+			html += '<p>eval模式由于太过于耗时，所以只允许执行次数小于100万次时出现</p>';		
 			html += '<p>可以放心的时，所有的计时只针对于特定的运算，其它任何有影响的操作都不会纳入到计时范围</p>';
 			
 			return html;
@@ -273,35 +273,36 @@
 						};
 					}
 				},
-				//一个item,es6这段代码在普通浏览器里编译不过
-				"tmp_arrayChange2": {
-					//是否需要es6才会显示
-					"needEs6": true,
-					"supportType": "number_string_object",
-					//显示的domID,必须唯一
-					"domId": "tmp_arrayChange2",
-					'name': '利用创建一个新的数组来进行数据交换,交换方式2(需要es6支持)',
-					"codeHtml": '[a, b] = [b, a];<br/>',
-					"runCode": function(perCount, a, b, tmp, arr) {
-						window.evalArrayChange2Result = {};
-						//整段代码放在eval里执行是因为普通浏览器会报错，相当于连着计时一起挪了一个环境
-						eval('var begin=(new Date()).getTime();for(i=0;i<perCount;i++){[a,b]=[b,a]}var end=(new Date()).getTime();evalArrayChange2Result={begin:begin,end:end,a:a,b:b,tmp:tmp,arr:arr};');
-						/*						var begin = (new Date()).getTime();
-												for(i = 0; i < perCount; i++) {
-													[a, b] = [b, a];
-												}
-												var end = (new Date()).getTime();
-												return {
-													begin: begin,
-													end: end,
-													a: a,
-													b: b,
-													tmp: tmp,
-													arr: arr
-												};*/
-						return window.evalArrayChange2Result;
-					}
-				},
+//				//一个item,es6这段代码在普通浏览器里编译不过
+//				"tmp_arrayChange2": {
+//					//是否需要es6才会显示
+//					"needEs6": true,
+//					"supportType": "number_string_object",
+//					//显示的domID,必须唯一
+//					"domId": "tmp_arrayChange2",
+//					'name': '利用创建一个新的数组来进行数据交换,交换方式2(需要es6支持)',
+//					"codeHtml": '[a, b] = [b, a];<br/>',
+//					"runCode": function(perCount, a, b, tmp, arr) {
+//						window.evalArrayChange2Result = {};
+//						//eval执行影响效率，直接放置出错，所以暂时注释
+//						//eval('var begin=(new Date()).getTime();for(i=0;i<perCount;i++){[a,b]=[b,a]}var end=(new Date()).getTime();evalArrayChange2Result={begin:begin,end:end,a:a,b:b,tmp:tmp,arr:arr};');
+//						//return window.evalArrayChange2Result;
+////												var begin = (new Date()).getTime();
+////												for(i = 0; i < perCount; i++) {
+////													[a, b] = [b, a];
+////												}
+////												var end = (new Date()).getTime();
+////												return {
+////													begin: begin,
+////													end: end,
+////													a: a,
+////													b: b,
+////													tmp: tmp,
+////													arr: arr
+////												};
+//						
+//					}
+//				},
 				//一个item
 				"tmp_xor1": {
 					//是否需要es6才会显示
@@ -479,7 +480,7 @@
 					//是否需要es6才会显示
 					"needEs6": false,
 					//最大执行次数,设置了后超过它不会显示
-					"maxCount": 10000,
+					"maxCount": 1000000,
 					"supportType": "number_string",
 					//显示的domID,必须唯一
 					"domId": "tmp_other2",
@@ -580,4 +581,5 @@
 		},
 	});
 	new performaceAnalysis();
+	
 })();
