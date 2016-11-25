@@ -37,14 +37,16 @@
 			//默认什么都不做
 			var html = '';
 			html += '<p>循环方式对比是专门对比普通for循环和foreach,以及其它遍历方式在大量运算后的结果</p>';
-			
+
 			html += '<p>目前对比三大类型,for循环,forin,foreach以及for循环的几种不同运用</p>';
-			
+
 			html += '<p>可以看到,不同的方式差距较大</p>';
-			
+
 			html += '<p>同样,目前设置了最大可运行执行阈值,大于某个数后,执行耗时较长的就会自动隐藏</p>';
-			
+
 			html += '<p>其中,forin大于100就会隐藏,map大于500就会隐藏</p>';
+			
+			html += '<p>需要注意的是,for of由于是es6中才能使用,所以代码中默认注释掉了</p>';
 			return html;
 		},
 		/**
@@ -295,6 +297,72 @@
 						};
 					},
 				},
+//				//es6里的方法,暂时注释掉
+//				"tmp_loopCompare_forof": {
+//					//是否需要es6才会显示
+//					"needEs6": false,
+//					"maxCount": 10000,
+//					"supportType": "loopCompare",
+//					//显示的domID,必须唯一
+//					"domId": "tmp_loopCompare_forof",
+//					'name': 'for of循环执行代码<br/>',
+//					"codeHtml": 'for(let value of arr) {  <br/>   <br/>});',
+//					"runCode": function(perCount, a, b, tmp, arr) {
+//						//防止干扰
+//						var a = a,
+//							b = b,
+//							tmp = tmp,
+//							arr = arr,
+//							perCount = perCount,
+//							i, j, len;
+//						var begin = (new Date()).getTime();
+//						for(i = 0; i < perCount; i++) {
+//							for(let value of arr) {}
+//						}
+//						var end = (new Date()).getTime();
+//						return {
+//							begin: begin,
+//							end: end,
+//							a: a,
+//							b: b,
+//							tmp: tmp,
+//							arr: arr
+//						};
+//					},
+//				},
+//				//es6里的方法,暂时注释掉,优化版
+//				"tmp_loopCompare_forof2": {
+//					//是否需要es6才会显示
+//					"needEs6": false,
+//					"maxCount": 10000,
+//					"supportType": "loopCompare",
+//					//显示的domID,必须唯一
+//					"domId": "tmp_loopCompare_forof2",
+//					'name': 'for of循环执行代码<br/>',
+//					"codeHtml": 'for(j of arr) {  <br/>   <br/>});',
+//					"runCode": function(perCount, a, b, tmp, arr) {
+//						//防止干扰
+//						var a = a,
+//							b = b,
+//							tmp = tmp,
+//							arr = arr,
+//							perCount = perCount,
+//							i, j, len;
+//						var begin = (new Date()).getTime();
+//						for(i = 0; i < perCount; i++) {
+//							for(j of arr) {}
+//						}
+//						var end = (new Date()).getTime();
+//						return {
+//							begin: begin,
+//							end: end,
+//							a: a,
+//							b: b,
+//							tmp: tmp,
+//							arr: arr
+//						};
+//					},
+//				},
 			};
 			return allData;
 		},
