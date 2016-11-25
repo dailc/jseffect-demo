@@ -6,6 +6,7 @@
 (function(exports) {
 	//补全map
 	if(!Array.prototype.map) {
+		console.log("拓展map");
 		Array.prototype.map = function(fn) {
 			var a = [];
 			for(var i = 0; i < this.length; i++) {

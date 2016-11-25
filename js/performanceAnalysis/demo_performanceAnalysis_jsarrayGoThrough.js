@@ -262,11 +262,46 @@
 						};
 					},
 				},
+				//一个item
+				"tmp_loopCompare_foreach2": {
+					//是否需要es6才会显示
+					"needEs6": false,
+					"maxCount": 1000,
+					"supportType": "loopCompare",
+					//显示的domID,必须唯一
+					"domId": "tmp_loopCompare_foreach2",
+					'name': 'for each循环执行代码,第二种方式<br/>',
+					"codeHtml": 'Array.prototype.forEach.call(arr,function(el){  <br/>   <br/>});',
+					"runCode": function(perCount, a, b, tmp, arr) {
+						//防止干扰
+						var a = a,
+							b = b,
+							tmp = tmp,
+							arr = arr,
+							perCount = perCount,
+							i, j, len;
+						var begin = (new Date()).getTime();
+						for(i = 0; i < perCount; i++) {
+							Array.prototype.forEach.call(arr,function(el){
+								
+							});
+						}
+						var end = (new Date()).getTime();
+						return {
+							begin: begin,
+							end: end,
+							a: a,
+							b: b,
+							tmp: tmp,
+							arr: arr
+						};
+					},
+				},
 				//一个item,对于一些不支持map的,app.js里面有进行补全
 				"tmp_loopCompare_formap": {
 					//是否需要es6才会显示
 					"needEs6": false,
-					"maxCount": 500,
+					"maxCount": 1000,
 					"supportType": "loopCompare",
 					//显示的domID,必须唯一
 					"domId": "tmp_loopCompare_formap",
@@ -368,4 +403,5 @@
 		},
 	});
 	new performaceAnalysis();
+	
 })();
