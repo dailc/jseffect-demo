@@ -43,15 +43,9 @@
 			html += '<p>可以看到,不同的方式差距较大</p>';
 			
 			html += '<p>同样,目前设置了最大可运行执行阈值,大于某个数后,执行耗时较长的就会自动隐藏</p>';
+			
+			html += '<p>其中,forin大于100就会隐藏,map大于500就会隐藏</p>';
 			return html;
-		},
-		/**
-		 * @description type改变后,这里可以更改显示逻辑
-		 * @param {String} type 类别
-		 */
-		typeChangeCallback: function(type) {
-			var self = this;
-			//目前没有操作
 		},
 		/**
 		 * @description 初始化一些前提代码
@@ -270,7 +264,7 @@
 				"tmp_loopCompare_formap": {
 					//是否需要es6才会显示
 					"needEs6": false,
-					"maxCount": 1000,
+					"maxCount": 500,
 					"supportType": "loopCompare",
 					//显示的domID,必须唯一
 					"domId": "tmp_loopCompare_formap",
