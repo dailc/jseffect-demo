@@ -501,9 +501,7 @@
 			if(!options) {
 				return
 			};
-			if(typeof selector === 'string') {
-				selector = document.querySelector(selector);
-			}
+			selector = app.dom.getDom(selector);
 			if(options.display) {
 				//如果是与display显示有关
 				if(options.display === 'hide' || options.display === 'none') {
@@ -679,29 +677,29 @@
 		 * @description 获取元素的宽度
 		 */
 		exports.getElW = function(elem) {
-			app.dom.getDom(elem);
+			elem = app.dom.getDom(elem);
 			return elem.offsetWidth;
 		};
 		/**
 		 * @description 获取元素的高度
 		 */
 		exports.getElH = function(elem) {
-			app.dom.getDom(elem);
+			elem = app.dom.getDom(elem);
 			return elem.offsetHeight;
 		};
 	})(exports.dimensions = {});
 	//offset模块
 	(function(exports) {
 		exports.getTop = function(elem) {
-			app.dom.getDom(elem);
+			elem = app.dom.getDom(elem);
 			return elem.offsetParent ? (elem.offsetTop + exports.getTop(elem.offsetParent)) : elem.offsetTop;
 		};
 		exports.getLeft = function(elem) {
-			app.dom.getDom(elem);
+			elem = app.dom.getDom(elem);
 			return elem.offsetParent ? (elem.offsetLeft + exports.getLeft(elem.offsetParent)) : elem.offsetLeft;
 		};
 		exports.getOffset = function(elem) {
-			app.dom.getDom(elem);
+			elem = app.dom.getDom(elem);
 			return {
 				left: exports.getLeft(elem),
 				top: exports.getTop(elem),
