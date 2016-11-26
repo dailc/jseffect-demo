@@ -769,7 +769,7 @@
 			var inputDom = document.querySelector('.site-search input');
 			app.event.bindEvent(inputDom, function() {
 				var value = inputDom.value;
-				window.location.href = 'blog_search.html#' + value;
+				window.location.href = '/search/search#'+value;
 			}, 'change');
 		}
 		window.onload = function() {
