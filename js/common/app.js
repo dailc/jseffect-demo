@@ -748,15 +748,15 @@
 			var collapsedBtn = document.querySelector('.header .collapsed');
 			if(collapsedBtn) {
 				var menuContainer = document.querySelector('.header .menu-container');
-				app.bindEvent(collapsedBtn, function() {
+				app.event.bindEvent(collapsedBtn, function() {
 					//console.log("点击");
 					if(menuContainer.classList.contains('hideMenu')) {
-						app.animate(menuContainer, {
+						app.animate.animate(menuContainer, {
 							"display": "show"
 						});
 						menuContainer.classList.remove('hideMenu');
 					} else {
-						app.animate(menuContainer, {
+						app.animate.animate(menuContainer, {
 							"display": "hide"
 						});
 						menuContainer.classList.add('hideMenu');
