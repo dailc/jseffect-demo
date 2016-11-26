@@ -68,9 +68,9 @@
 			self.runTimesCount = parseInt(self.perCountDom.value) * self.retryCount;
 
 			//判断系统
-			var osInfo = app.getOSInfo();
-			var browserInfo = app.getBrowserInfo();
-			console.log(osInfo + ',~' + browserInfo);
+			var osInfo = app.os.getOSInfo();
+			var browserInfo = app.os.getBrowserInfo();
+			//console.log(osInfo + ',~' + browserInfo);
 			var sysInfoHtml = '测试环境:' + osInfo + '&nbsp;&nbsp;&nbsp;&nbsp;浏览器信息:' + browserInfo;
 			document.querySelector('#test-table caption').innerHTML = sysInfoHtml;
 			self.showAttentionTips();
@@ -90,7 +90,7 @@
 		 */
 		initListeners: function() {
 			var self = this;
-			app.bindEvent('.exchange-type, .es6-support', function() {
+			app.event.bindEvent('.exchange-type, .es6-support', function() {
 				var index = this.selectedIndex; // 选中索引
 				var value = this.options[index].value; // 选中文本
 				//console.log("选择:" + value);
@@ -99,15 +99,14 @@
 				self.createAllItemHtml(self.chooseType, self.isSupportEs6);
 			}, 'change');
 
-			app.bindEvent('#per-run-count,#all-loop-count', function() {
+			app.event.bindEvent('#per-run-count,#all-loop-count', function() {
 				self.retryCount = parseInt(self.allLoopCountDom.value);
 				//总执行的次数，不会小于100
 				self.runTimesCount = parseInt(self.perCountDom.value) * self.retryCount;
 				self.createAllItemHtml(self.chooseType, self.isSupportEs6);
 			}, 'change');
 			//执行按钮
-			app.bindEvent('#btn-run', function() {
-				console.log("开始执行");
+			app.event.bindEvent('#btn-run', function() {
 				if(!self.isRunning) {
 					self.isForceStopFlag = false;
 					//如果没有开始执行
