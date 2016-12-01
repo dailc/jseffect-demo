@@ -116,6 +116,35 @@
 	//common模块
 	(function(exports) {
 		/**
+		 * @description 产生一个 唯一uuid-guid
+		 * @param {Number} len
+		 * @param {Number} radix 基数
+		 * @return {String} 返回一个随机性的唯一uuid
+		 */
+		exports.uuid = function(len, radix) {
+			var chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'.split(''),
+				uuid = [],
+				i;
+			radix = radix || chars.length;
+
+			if(len) {
+				for(i = 0; i < len; i++) uuid[i] = chars[0 | Math.random() * radix];
+			} else {
+				var r;
+
+				uuid[8] = uuid[13] = uuid[18] = uuid[23] = '-';
+				uuid[14] = '4';
+
+				for(i = 0; i < 36; i++) {
+					if(!uuid[i]) {
+						r = 0 | Math.random() * 16;
+						uuid[i] = chars[(i == 19) ? (r & 0x3) | 0x8 : r];
+					}
+				}
+			}
+			return uuid.join('');
+		};
+		/**
 		 * each each遍历
 		 * @param {type} elements
 		 * @param {type} callback
@@ -579,9 +608,9 @@
 			if(!dom) {
 				return;
 			}
-			var callbackFilter = function(el){
-				callback&&callback.apply(this);
-				this.removeEventListener(eventName,callbackFilter);
+			var callbackFilter = function(el) {
+				callback && callback.apply(this);
+				this.removeEventListener(eventName, callbackFilter);
 			};
 			if(dom.length > 0) {
 				for(var i = 0, len = dom.length; i < len; i++) {
@@ -769,7 +798,7 @@
 			var inputDom = document.querySelector('.site-search input');
 			app.event.bindEvent(inputDom, function() {
 				var value = inputDom.value;
-				window.location.href = '/search/search#'+value;
+				window.location.href = '/search/search#' + value;
 			}, 'change');
 		}
 		window.onload = function() {

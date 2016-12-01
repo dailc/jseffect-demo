@@ -94,11 +94,10 @@
 				var index = this.selectedIndex; // 选中索引
 				var value = this.options[index].value; // 选中文本
 				//console.log("选择:" + value);
-
+				self.chooseType = value;
 				self.typeChangeCallback && self.typeChangeCallback(value);
 				self.createAllItemHtml(self.chooseType, self.isSupportEs6);
 			}, 'change');
-
 			app.event.bindEvent('#per-run-count,#all-loop-count', function() {
 				self.retryCount = parseInt(self.allLoopCountDom.value);
 				//总执行的次数，不会小于100
@@ -134,7 +133,6 @@
 				//必须支持es6
 				if((!self.allData[item].needEs6 || isEs6) && self.allData[item].supportType.indexOf(type) !== -1) {
 					if(self.allData[item].maxCount && self.runTimesCount > self.allData[item].maxCount) {
-
 						continue;
 					}
 					currentRunQueue.push(self.allData[item]);
@@ -150,7 +148,17 @@
 					html += '<div>' + tmp.name + '</div>';
 					html += '</th>';
 					html += '<td class="code">';
-					html += '<pre><code>' + tmp.codeHtml + '</code></pre>';
+					var codeHtml = '';
+					if(typeof tmp.codeHtml === 'function'){
+						codeHtml = tmp.codeHtml();
+					}else{
+						codeHtml = tmp.codeHtml;
+					}
+					html += '<pre class="prettyprint linenums">';
+					html += '<code>';
+					html += codeHtml;
+					html += '</code>';
+					html += '</pre>';
 					html += '</td>';
 					html += '<td class="results" >';
 					html += '等待执行';
@@ -170,6 +178,7 @@
 			var html = createHtml();
 			document.getElementById('run-code-content').innerHTML = html;
 			self.currentRunQueue = currentRunQueue;
+			window.prettyPrint&&prettyPrint();
 			//console.log("当前执行队列:"+JSON.stringify(currentRunQueue));
 		},
 		/**
@@ -193,7 +202,7 @@
 		 * @param {Array} countArray 计算出来的数组
 		 * @param {String} domId 分析完后需要显示的dom的id
 		 */
-		analysis: function(callback, countArray, domId, a, b, tmp, arr) {
+		analysis: function(callback, countArray, domId, a, b, tmp, arr,finalArr) {
 			var self = this;
 			
 
@@ -215,7 +224,7 @@
 			//计算每秒执行
 			var perSecond = self.runTimesCount * 1000 / sum;
 
-			var html = self.customeShowTips(sum, perSecond, meanDeviationsPercent, a, b, tmp, arr);
+			var html = self.customeShowTips(sum, perSecond, meanDeviationsPercent, a, b, tmp, arr,finalArr);
 			self.selectorResult(domId).innerHTML = html;
 			callback && callback(sum);
 		},
@@ -255,7 +264,7 @@
 						//完成了
 						self.analysis(function(sum) {
 							callback && callback(sum);
-						}, countArray, item.domId, result.a, result.b, result.tmp, result.arr);
+						}, countArray, item.domId, result.a, result.b, result.tmp, result.arr, result.finalArr);
 					}
 				};
 				loop(a, b, tmp, arr);
@@ -286,6 +295,10 @@
 			//每一个item执行完毕后也需要判断是否中断
 			var loop = function(callback) {
 				var tmp = self.currentRunQueue[index];
+				if(!tmp){
+					
+					return ;
+				}
 				var resultDom = self.selectorResult(tmp.domId);
 				if(self.isForceStopFlag) {
 					callback && callback();
