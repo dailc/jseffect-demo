@@ -12,8 +12,8 @@
 		<meta name="renderer" content="webkit" />
 		<!-- 移动端的响应式特性 -->
 		<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-		<meta content="js,数组排序,js应用,性能分析" name="Keywords">
-		<meta content="JS中几种常用数组排序方式分析比较,包括冒泡排序,快速排序，插入排序，堆排序，希尔排序，sort等" name="description">
+		<meta content="js,数组排序,js应用,性能分析，桶排序，希尔排序，快速排序，堆排序，计数排序" name="Keywords">
+		<meta content="JS中几种常用数组排序方式分析比较,包括冒泡排序,快速排序，插入排序，堆排序，希尔排序，桶排序，计数排序，基数排序，sort等" name="description">
 		<title>JS中几种常用数组排序方式分析比较</title>
 		<link rel="stylesheet" href="../../css/common/reset.css" />
 		<link rel="stylesheet" href="../../css/common/prettify.css" />
@@ -110,6 +110,9 @@
 					</li>
 					<li>
 						<a href="https://dailc.github.io/showDemo/html/performanceAnalysis/demo_performanceAnalysis_jsarrayGoThrough.html">Js中几种常用数组遍历方式分析比较</a>
+					</li>
+					<li>
+						<a href="https://dailc.github.io/showDemo/html/performanceAnalysis/demo_performanceAnalysis_jsarraySort.html">JS中几种常用数组排序方式分析比较</a>
 					</li>
 				</ul>
 			</nav>
@@ -502,6 +505,73 @@ var bucketSort = function(arr) {
 };
 arr = bucketSort(arr);
 			</pre>
+			<pre id="code-bucketsort-linklist">
+var L = linklist;
+//只适用于数字
+var bucketSort = function(arr, bucketCount) {
+    if (arr.length <= 1) {
+        return arr;
+    }
+    bucketCount = bucketCount || 10;
+    //初始化桶
+    var len = arr.length,
+    buckets = [],
+    result = [],
+    max = arr[0],
+    min = arr[0];
+    for (var i = 1; i < len; i++) {
+        min = min <= arr[i] ? min: arr[i];
+        max = max >= arr[i] ? max: arr[i];
+    }
+    //求出每一个桶的数值范围
+    var space = (max - min + 1) / bucketCount;
+    //将数值装入桶中
+    for (var i = 0; i < len; i++) {
+        //找到相应的桶序列
+        var index = Math.floor((arr[i] - min) / space);
+        //判断是否桶中已经有数值
+        if (buckets[index]) {
+            //数组从小到大排列
+            var bucket = buckets[index];
+            var insert = false; //插入标石
+            L.reTraversal(bucket,
+            function(item, done) {
+                if (arr[i] <= item.v) { //小于，左边插入
+                    L.append(item, _val(arr[i]));
+                    insert = true;
+                    done(); //退出遍历
+                }
+            });
+            if (!insert) { //大于，右边插入
+                L.append(bucket, _val(arr[i]));
+            }
+        } else {
+            var bucket = L.init();
+            L.append(bucket, _val(arr[i]));
+            buckets[index] = bucket; //链表实现
+        }
+    }
+    //开始合并数组
+    for (var i = 0,
+    j = 0; i < bucketCount; i++) {
+        L.reTraversal(buckets[i],
+        function(item) {
+            // console.log(i+":"+item.v);
+            result[j++] = item.v;
+        });
+    }
+    return result;
+};
+
+//链表存储对象
+var _val = function(v) {
+    return {
+        v: v
+    }
+};
+
+arr = bucketSort(arr, self.bucketCount);
+			</pre>
 			<pre id="code-radixsort">
 var radixSort = function(arr, maxDigit) {
     var mod = 10;
@@ -532,6 +602,7 @@ arr = radixSort(arr, 5);
 		</div>
 		<script type="text/javascript" src="../../js/common/app.js"></script>
 		<script type="text/javascript" src="../../js/common/prettify/prettify.js" ></script>
+		<script type="text/javascript" src="../../js/common/linklist.js" ></script>
 		<script type="text/javascript" src="../../js/performanceAnalysis/PerformaceAnalysisLitemlate.js"></script>
 		<script type="text/javascript" src="../../js/performanceAnalysis/demo_performanceAnalysis_jsarraySort.js"></script>
 	</body>

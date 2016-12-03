@@ -30,6 +30,15 @@ JS中几种常用数组遍历方式分析比较,包括for循环,for in，foreach
 #### 示例页面
 [JS中几种常用数组遍历方式分析比较](http://dailc.github.io/html/showDemo/performanceAnalysis/demo_performanceAnalysis_jsarrayGoThrough.html)
 
+### JS中几种常用数组排序方式分析比较
+JS中几种常用数组排序方式分析比较,包括冒泡排序,快速排序，插入排序，堆排序，希尔排序，桶排序，计数排序，基数排序，sort等
+
+#### 效果图
+![](https://dailc.github.io/showDemo/staticresource/performanceAnalysis/algorithmSort/demo_js_algorithmSort_bucketSort_1.png)
+
+#### 示例页面
+[JS中几种常用数组遍历方式分析比较](http://dailc.github.io/html/showDemo/performanceAnalysis/demo_performanceAnalysis_jsarrayGoThrough.html)
+
 ## 瀑布流效果
 网页实现瀑布流效果的几种实现,包括
 

@@ -65,7 +65,7 @@
 					self.testArray.push(app.common.uuid(8));
 				} else if(self.chooseType === 'bucketOnly') {
 					//self.testArray.push(Math.floor(Math.random()*1000));
-					self.testArray.push(Math.random()*10000);
+					self.testArray.push(Math.random() * 10000);
 				} else {
 					self.testArray.push(parseInt(Math.random() * (1 << 16)));
 				}
@@ -150,13 +150,13 @@
 					html += arr[i] + ',';
 					if(self.chooseType === 'sortString' && i !== 0 && i % 3 === 0) {
 						html += '<br/>';
-					} else if(self.chooseType === 'bucketOnly' &&i % 2 === 1) {
+					} else if(self.chooseType === 'bucketOnly' && i % 2 === 1) {
 						html += '<br/>';
-					} 
+					}
 				}
 				if(arr.length > (count + 1)) {
 					html += '...省略' + (arr.length - count - 1) + '个元素...,';
-					if(self.chooseType === 'sortString'||self.chooseType === 'bucketOnly') {
+					if(self.chooseType === 'sortString' || self.chooseType === 'bucketOnly') {
 						html += '<br/>';
 					}
 				}
@@ -184,7 +184,7 @@
 			html += '<p>比如1000001，则会隐藏所有代码</p>';
 
 			html += '<p>注意，桶排序中，分桶数要合理</p>';
-			
+
 			html += '<p>可以看出，几种不同的桶排序写法么，在不同分桶，长度的情况下的比较</p>';
 			return html;
 		},
@@ -908,9 +908,9 @@
 							//开始合并数组
 							var n = 0;
 							while(n < bucketCount) {
-								if(buckets[n]){
+								if(buckets[n]) {
 									result = result.concat(buckets[n]);
-								}	
+								}
 								n++;
 							}
 							return result;
@@ -981,9 +981,9 @@
 							//开始合并数组
 							var n = 0;
 							while(n < bucketCount) {
-								if(buckets[n]){
-									result = result.concat(buckets[n]);			
-								}	
+								if(buckets[n]) {
+									result = result.concat(buckets[n]);
+								}
 								n++;
 							}
 							return result;
@@ -1025,7 +1025,7 @@
 							min = Math.min.apply(null, arr);
 						var bucketCount = self.bucketCount;
 						//每一个都创建一个数组
-						for(var i=0;i<bucketCount;i++){
+						for(var i = 0; i < bucketCount; i++) {
 							buckets[i] = [];
 						}
 						//只适用于数字
@@ -1033,10 +1033,10 @@
 							if(arr.length <= 1) {
 								return arr;
 							}
-							
+
 							//求出每一个桶的数值范围
 							var space = (max - min + 1) / bucketCount;
-							
+
 							//将数值装入桶中
 							for(var i = 0; i < len; i++) {
 								var tmp = arr[i];
@@ -1044,7 +1044,7 @@
 								var index = Math.floor((tmp - min) / space);
 								var bucket = buckets[index];
 								//判断是否桶中已经有数值
-								if(bucket.length>0) {
+								if(bucket.length > 0) {
 									//数组从小到大排列	
 									var k = bucket.length - 1;
 									while(k >= 0 && bucket[k] > tmp) {
@@ -1059,10 +1059,10 @@
 							//开始合并数组
 							var n = 0;
 							while(n < bucketCount) {
-								if(buckets[n].length){
+								if(buckets[n].length) {
 									result = result.concat(buckets[n]);
-								}	
-								
+								}
+
 								n++;
 							}
 							return result;
@@ -1070,6 +1070,95 @@
 
 						var begin = (new Date()).getTime();
 						arr = bucketSort(arr);
+						var end = (new Date()).getTime();
+						//保证每次的数据源都一样,没有被污染,使用的是拷贝进行排序
+						return {
+							begin: begin,
+							end: end,
+							arr: arrV,
+							finalArr: arr
+						};
+					},
+				},
+				//桶排序,模拟链表但
+				"tmp_arraySort_bucketSort_linklist": {
+					//是否需要es6才会显示
+					"needEs6": false,
+					//当数组长度超过这个时,自动隐藏
+					"maxLength": 500000,
+					"supportType": "arraySort_bucketOnly",
+					//显示的domID,必须唯一
+					"domId": "tmp_arraySort_bucketSort_linklist",
+					'name': '桶排序<br/>(模拟链表版)',
+					"codeHtml": function() {
+						return document.getElementById('code-bucketsort-linklist').innerHTML;
+					},
+					"runCode": function(perCount, a, b, tmp, arrV) {
+						//防止干扰,深复制
+						var arr = arrV.slice(0);
+						var L = linklist;
+						//只适用于数字
+						var bucketSort = function(arr, bucketCount) {
+							if(arr.length <= 1) {
+								return arr;
+							}
+							bucketCount = bucketCount || 10;
+							//初始化桶
+							var len = arr.length,
+								buckets = [],
+								result = [],
+								max = arr[0],
+								min = arr[0];
+							for(var i = 1; i < len; i++) {
+								min = min <= arr[i] ? min : arr[i];
+								max = max >= arr[i] ? max : arr[i];
+							}
+							//求出每一个桶的数值范围
+							var space = (max - min + 1) / bucketCount;
+							//将数值装入桶中
+							for(var i = 0; i < len; i++) {
+								//找到相应的桶序列
+								var index = Math.floor((arr[i] - min) / space);
+								//判断是否桶中已经有数值
+								if(buckets[index]) {
+									//数组从小到大排列
+									var bucket = buckets[index];
+									var insert = false; //插入标石
+									L.reTraversal(bucket, function(item, done) {
+										if(arr[i] <= item.v) { //小于，左边插入
+											L.append(item, _val(arr[i]));
+											insert = true;
+											done(); //退出遍历
+										}
+									});
+									if(!insert) { //大于，右边插入
+										L.append(bucket, _val(arr[i]));
+									}
+								} else {
+									var bucket = L.init();
+									L.append(bucket, _val(arr[i]));
+									buckets[index] = bucket; //链表实现
+								}
+							}
+							//开始合并数组
+							for(var i = 0, j = 0; i < bucketCount; i++) {
+								L.reTraversal(buckets[i], function(item) {
+									// console.log(i+":"+item.v);
+									result[j++] = item.v;
+								});
+							}
+							return result;
+						};
+
+						//链表存储对象
+						var _val = function(v) {
+							return {
+								v: v
+							}
+						};
+
+						var begin = (new Date()).getTime();
+						arr = bucketSort(arr, self.bucketCount);
 						var end = (new Date()).getTime();
 						//保证每次的数据源都一样,没有被污染,使用的是拷贝进行排序
 						return {
