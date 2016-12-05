@@ -2,42 +2,7 @@
 
 自己写的一些精选功能点效果类库，如瀑布流，JS性能分析，360加速球等效果
 
-## JS性能分析系列
-针对一些常用的js操作,在大量计算后分析各自性能,包括
 
-* 几种常用的数值交换方式分析
-* 几种常用的数组遍历方式分析
-* 几种常用的数组排序方式分析
-
-### 几种常用的数值交换方式分析
-JS几种数值交换方式分析比较,包括tmp变量交换,加减法，异或，数组法等
-
-#### 效果图
-![](https://dailc.github.io/showDemo/staticresource/performanceAnalysis/demo_js_performanceAnalysis_jsexchangevalue_1.png)
-![](https://dailc.github.io/showDemo/staticresource/performanceAnalysis/demo_js_performanceAnalysis_jsexchangevalue_2.png)
-
-
-#### 示例页面
-[JS几种数值交换方式分析比较](http://dailc.github.io/showDemo/html/performanceAnalysis/demo_performanceAnalysis_jsexchangevalue.html)
-
-
-### 几种常用的数组遍历方式分析
-JS中几种常用数组遍历方式分析比较,包括for循环,for in，foreach，map法等
-
-#### 效果图
-![](https://dailc.github.io/showDemo/staticresource/performanceAnalysis/demo_js_performanceAnalysis_jsarrayGoThrough_1.png)
-
-#### 示例页面
-[JS中几种常用数组遍历方式分析比较](http://dailc.github.io/html/showDemo/performanceAnalysis/demo_performanceAnalysis_jsarrayGoThrough.html)
-
-### JS中几种常用数组排序方式分析比较
-JS中几种常用数组排序方式分析比较,包括冒泡排序,快速排序，插入排序，堆排序，希尔排序，桶排序，计数排序，基数排序，sort等
-
-#### 效果图
-![](https://dailc.github.io/showDemo/staticresource/performanceAnalysis/algorithmSort/demo_js_algorithmSort_bucketSort_1.png)
-
-#### 示例页面
-[JS中几种常用数组遍历方式分析比较](http://dailc.github.io/html/showDemo/performanceAnalysis/demo_performanceAnalysis_jsarrayGoThrough.html)
 
 ## 瀑布流效果
 网页实现瀑布流效果的几种实现,包括
@@ -70,10 +35,7 @@ JS中几种常用数组排序方式分析比较,包括冒泡排序,快速排序�
 
 
 ## 相关博文
-[网页瀑布流效果实现的几种方式](https://dailc.github.io/2016/11/13/waterflowEffect)
-
-[JS几种变量交换方式以及性能分析对比](http://dailc.github.io/2016/11/21/baseKnowlenge_javascript_exchangeValue)
-
+[网页瀑布流效果实现的几种方式](https://dailc.github.io/2016/11/13/waterflowEffect.html)
 
 
 ## License
