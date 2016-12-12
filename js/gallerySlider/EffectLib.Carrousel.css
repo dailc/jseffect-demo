@@ -1,0 +1,49 @@
+/**
+ * Carrousel类库的css文件
+ * @author dailc
+ * @version 1.0
+ * @time 2016-12-12 
+ * https://github.com/dailc
+ */
+
+/*
+ * 舞台相应的样式,其它一些参数由js动态计算生成
+ * 如perspective,height,transform
+ */
+
+.dai-carrousel-state {
+	position: relative;
+	overflow: hidden;
+}
+
+
+/**
+ * 元素容器相应样式
+ * transform 由脚本动态生成
+ */
+.dai-carrousel-container {
+	position: relative;
+	/*子元素依然保留3d属性*/
+	-webkit-transform-style: preserve-3d;
+	-moz-transform-style: preserve-3d;
+	transform-style: preserve-3d;
+	transition-timing-function: cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+/**
+ * width由代码动态控制
+ */
+.dai-carrousel-item {
+	position: absolute;
+	left: 0;
+	top: 0;
+	height: auto;
+}
+/**
+ * 默认图片样式 高度自适应
+ */
+.dai-carrousel-item img {
+	width: 100%;
+	height: auto;
+	vertical-align: middle;
+}
