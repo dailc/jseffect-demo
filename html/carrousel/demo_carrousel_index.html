@@ -1,0 +1,114 @@
+<!-- 
+  	作者：dailc
+          时间：2016-12-12
+          描述：一款通用型的滑动组件,支持2d滑动效果和3d滑动效果(比如3d旋转木马),滑动支持div滑动和图片滑动
+          底层数据结构采用双向链表(循环)模拟
+          
+          开放的api:
+ 	reset 重置,这个可以重写更换options
+ 	prev 上一个item
+ 	next 下一个item
+ 	moveTo 移动到某一个指定item,会寻找最短路径
+ 	bindItemChangedHandler 绑定item切换的监听回调
+ 	bindItemTapHandler 绑定item的tap监听
+ 	unBindItemTapHandler 解绑item的tap监听，会取消所有的item的tap事件以及item内部的tap
+ 	tap 绑定item内部某元素的tap事件，因为无法用click监听,所以单独提供了监听函数
+    
+-->
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+	<head>
+		<meta charset="UTF-8">
+		<!-- 让国内基于webkit的浏览器默认采用webkit内核进行渲染 -->
+		<meta name="renderer" content="webkit" />
+		<!-- 移动端的响应式特性 -->
+		<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+		<meta content="滑动组件,3d滑动,图片轮播,3d图片轮播,旋转木马,css,js,translate3d,gallerSlider,carousel" name="Keywords">
+		<meta content="通用滑动组件实现示例(2D,3D)" name="description">
+		<title>通用滑动组件实现示例(2D,3D)</title>
+		<link rel="stylesheet" href="../../css/common/reset.css" />
+		<link rel="stylesheet" href="../../js/carrousel/EffectLib.Carrousel.css" />
+		<link rel="stylesheet" href="../../css/carrousel/demo_gallerySlider_carousel.css" />
+
+	</head>
+
+	<body>
+		<div class="show-3d-gallery-slider">
+			<div class="gallery-slider">
+				<div class="dai-carrousel-state">
+					<div class="dai-carrousel-container">
+						<div class="dai-carrousel-item" style="background: #3b76c0">
+							<img src="../../img/bg1.jpg" />
+						</div>
+						<div class="dai-carrousel-item" style="background: #58c03b;">
+							<img src="../../img/bg2.jpg" />
+						</div>
+						<div class="dai-carrousel-item custom-item" style="background: #e0a718;">
+							<h1>Hello World</h1>
+							<button id="helloword">Hello Word</button>
+							<a href="https://dailc.github.io/" target="_blank">测试链接</a>
+						</div>
+						<div class="dai-carrousel-item" style="background: #c03b25;">
+							<img src="../../img/bg3.jpg" />
+						</div>
+						<div class="dai-carrousel-item" style="background: #e0a718;">
+							<img src="../../img/bg4.jpg" />
+						</div>
+						<div class="dai-carrousel-item" style="background: #c03eac;">
+							<img src="../../img/bg5.jpg" />
+						</div>
+						<div class="dai-carrousel-item custom-item" style="background: #e0a718;height: 100px;">
+
+						</div>
+					</div>
+				</div>
+
+				<div class="dai-carrousel-slider-indicator ">
+					<div class="dai-carrousel-indicator active" ></div>
+					<div class="dai-carrousel-indicator"></div>
+					<div class="dai-carrousel-indicator"></div>
+					<div class="dai-carrousel-indicator"></div>
+					<div class="dai-carrousel-indicator"></div>
+					<div class="dai-carrousel-indicator"></div>
+					<div class="dai-carrousel-indicator"></div>
+				</div>
+			</div>
+
+			<div class="option">
+				<div class="prev"><button class="btn-prev">prev</button></div>
+				<div class="next"><button class="btn-next">next</button></div>
+				<div class="random"><button class="btn-random">random</button></div>
+				<div class="random"><button class="btn-change-mode">3D,2D模式切换</button></div>
+				<div class="random"><button class="btn-change-auto">是否自动轮播(不自动now)</button></div>
+				<div class="random"><button class="btn-change-height">是否固定高度的切换(不固定now)</button></div>
+				<div class="random"><button class="btn-img-fill">是否img填充的切换(不填充now)</button></div>
+				<div class="random"><button class="btn-append">添加新元素(随机颜色div)</button></div>
+				<input id="widthChange" type="range" min="30" max="100" />
+			</div>
+		</div>
+
+		<script type="text/javascript" src="../../js/carrousel/EffectLib.Carrousel.js"></script>
+		<script type="text/javascript" src="../../js/carrousel/demo_carrousel_index.js"></script>
+		<script>
+			//以下是这个通用滑动组件的一些用法
+			var options = {
+				'containerSelector': '.show-3d-gallery-slider .gallery-slider',
+				'is3D': true,
+				'isLoop': true,
+				'itemWidth': '50%',
+				//强制固定高度
+				//'itemHeight': '160px',
+				//item的img样式,默认是 auto，也可以设置为 100%
+				//只有当item是div,并且存在img子级才有用
+				'itemImgHeight': '',
+				//如果设置了这个参数,就代表会自动轮播
+				//'interval':2000,
+				//自动轮播时默认的动画持续时间
+				'animationDuration': 1000,
+			};
+			window.carrousel_biz.init(options);
+		</script>
+	</body>
+
+</html>

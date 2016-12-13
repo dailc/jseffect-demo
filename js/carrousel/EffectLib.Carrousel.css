@@ -1,10 +1,12 @@
 /**
  * Carrousel类库的css文件
+ * 通用滑动组件  可以进行3d和2d之间的转换
  * @author dailc
  * @version 1.0
  * @time 2016-12-12 
  * https://github.com/dailc
  */
+
 
 /*
  * 舞台相应的样式,其它一些参数由js动态计算生成
@@ -21,29 +23,69 @@
  * 元素容器相应样式
  * transform 由脚本动态生成
  */
+
 .dai-carrousel-container {
 	position: relative;
 	/*子元素依然保留3d属性*/
 	-webkit-transform-style: preserve-3d;
 	-moz-transform-style: preserve-3d;
 	transform-style: preserve-3d;
-	transition-timing-function: cubic-bezier(0.165, 0.84, 0.44, 1);
 }
+
 
 /**
  * width由代码动态控制
  */
+
 .dai-carrousel-item {
 	position: absolute;
 	left: 0;
 	top: 0;
 	height: auto;
 }
+
+
 /**
  * 默认图片样式 高度自适应
  */
+
 .dai-carrousel-item img {
 	width: 100%;
 	height: auto;
 	vertical-align: middle;
 }
+
+
+/*
+ * dai-carrousel-slider-indicator
+ */
+
+.dai-carrousel-slider-indicator {
+	position: static;
+	margin: 3px 0;
+	width: 100%;
+	text-align: center;
+}
+
+
+/*
+ * slider-indicator下的小点
+ */
+
+.dai-carrousel-indicator {
+	position: relative;
+	width: 6px;
+    height: 6px;
+    display: inline-block;
+    margin: 1px 6px;
+	border-radius: 50%;
+	background: #aaa;
+    -webkit-box-shadow: 0 0 1px 1px rgba(130,130,130,.7);
+    box-shadow: 0 0 1px 1px rgba(130,130,130,.7);
+	cursor: pointer;
+}
+
+.dai-carrousel-slider-indicator .active {
+    background: #fff;
+}
+

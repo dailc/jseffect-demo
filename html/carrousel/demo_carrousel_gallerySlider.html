@@ -1,0 +1,86 @@
+<!-- 
+  	作者：dailc
+          时间：2016-12-13
+          描述：基于通用滑动组件进一步拓展封装的图片轮播组件示例
+          只需要关注图片,所以只需要传入图片数组即可
+          其它类似,比如9宫格等都可以这样封装
+-->
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+	<head>
+		<meta charset="UTF-8">
+		<!-- 让国内基于webkit的浏览器默认采用webkit内核进行渲染 -->
+		<meta name="renderer" content="webkit" />
+		<!-- 移动端的响应式特性 -->
+		<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+		<meta content="滑动组件,3d滑动,图片轮播,3d图片轮播,旋转木马,css,js,translate3d,gallerSlider,carousel" name="Keywords">
+		<meta content="3d图片轮播组件示例(2D,3D)" name="description">
+		<title>3d图片轮播组件示例(2D,3D)</title>
+		<link rel="stylesheet" href="../../css/common/reset.css" />
+		<link rel="stylesheet" href="../../js/carrousel/EffectLib.Carrousel.css" />
+		<link rel="stylesheet" href="../../css/carrousel/demo_gallerySlider_carousel.css" />
+
+	</head>
+
+	<body>
+		<div class="show-3d-gallery-slider">
+			<div class="gallery-slider">
+
+			</div>
+			
+			<div class="option">
+				<div class="prev"><button class="btn-prev">prev</button></div>
+				<div class="next"><button class="btn-next">next</button></div>
+				<div class="random"><button class="btn-random">random</button></div>
+				<div class="random"><button class="btn-change-mode">3D,2D模式切换</button></div>
+				<div class="random"><button class="btn-change-auto">是否自动轮播(不自动now)</button></div>
+				<div class="random"><button class="btn-change-height">是否固定高度的切换(不固定now)</button></div>
+				<div class="random"><button class="btn-img-fill">是否img填充的切换(不填充now)</button></div>
+				<div class="random"><button class="btn-append-img">添加新图片(默认添加背景3)</button></div>
+				<input id="widthChange" type="range" min="30" max="100" />
+			</div>
+		</div>
+
+		<script type="text/javascript" src="../../js/carrousel/EffectLib.Carrousel.js"></script>
+		<script type="text/javascript" src="../../js/carrousel/EffectLib.Carrousel.GallerySlider.js"></script>
+		<script type="text/javascript" src="../../js/carrousel/demo_carrousel_index.js"></script>
+		<script>
+			var arrayData = [{
+				url: "../../img/bg1.jpg"
+			}, {
+				url: "../../img/bg2.jpg"
+			}, {
+				url: "../../img/bg3.jpg"
+			}, {
+				url: "../../img/bg4.jpg"
+			}, {
+				url: "../../img/bg5.jpg"
+			}];
+			//以下是这个通用滑动组件的一些用法
+			var options = {
+				'containerSelector': '.show-3d-gallery-slider .gallery-slider',
+				'is3D': true,
+				'isLoop': true,
+				'itemWidth': '50%',
+				//强制固定高度
+				//'itemHeight': '160px',
+				//item的img样式,默认是 auto，也可以设置为 100%
+				//只有当item是div,并且存在img子级才有用
+				'itemImgHeight': '',
+				//如果设置了这个参数,就代表会自动轮播
+				//'interval':2000,
+				//自动轮播时默认的动画持续时间
+				'animationDuration': 1000,
+				//图片轮播拓展的一个options属性,imgData
+				//需要自行拓展只是这个参数
+				'imgData': arrayData,
+				//这个参数也是图片轮播中自行拓展的,是否显示indicator,默认为true
+				'isShowIndicator':true
+			};
+
+			window.carrousel_biz.init(options, arrayData);
+		</script>
+	</body>
+
+</html>

@@ -4,7 +4,7 @@
 
 /*重写item*/
 .custom-item {
-	min-height: 200px;
+	min-height: 100px;
 	height: auto;
 }
 
@@ -13,5 +13,4 @@ button,
 	width: 100%;
 	height: 45px;
 }
-
 

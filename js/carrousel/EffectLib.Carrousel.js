@@ -1,16 +1,133 @@
 /**
  * @description  图片轮播(旋转木马)2D,3D效果,外部可以通过配置来切换2d和3d效果
  * 轮播图片小于3张时，无法使用loop效果
+ * 内部集成了 需要的数据结构链表
+ * 开放的api:
+ * reset 重置,这个可以重写更换options
+ * prev 上一个item
+ * next 下一个item
+ * moveTo 移动到某一个指定item,会寻找最短路径
+ * bindItemChangedHandler 绑定item切换的监听回调
+ * bindItemTapHandler 绑定item的tap监听
+ * unBindItemTapHandler 解绑item的tap监听，会取消所有的item的tap事件以及item内部的tap
+ * tap 绑定item内部某元素的tap事件，因为无法用click监听,所以单独提供了监听函数
+ * 
  * @author dailc
  * @version 1.0
  * @time 2016-12-12 
  * https://github.com/dailc
  */
 (function(exports) {
+	//node模块
+	(function() {
+		/**
+		 * @description 链表中的node
+		 * @param {Object} data
+		 */
+		function Node(data) {
+			//节点的数据
+			this.data = data;
+			//直接前驱节点
+			this._prev = null;
+			//直接后继节点
+			this._next = null;
+		}
+		exports.Node = Node;
+	})();
+	//双向链表模块
+	(function() {
+		/**
+		 * @constructor 链表的构造函数
+		 * @description 构造的变量由参数绝对，
+		 * @param {JSON} options 额外的参数
+		 * isLoop 是否是为循环链表,默认为false
+		 */
+		function LinkList(options) {
+			options = options || {};
+			//链表的头节点
+			this.head = null;
+			//链表的尾节点
+			this.tail = null;
+			//options参数的配置
+			//isLoop,默认为非循环链表
+			this.isLoop = options.isLoop || false;
+		}
+
+		/**
+		 * @description 链表的append
+		 * @param {Node} node DataStruct中的Node节点
+		 */
+		LinkList.prototype.append = function(node) {
+			if(!this.head) {
+				//如果不存在头节点,头和尾巴同时赋值
+				this.head = node;
+				this.tail = node;
+			} else {
+				//节点插入尾节点后面,并重新定义尾节点
+				this.tail._next = node;
+				node._prev = this.tail;
+				this.tail = node;
+			}
+			if(this.isLoop) {
+				//如果是循环链表，头和尾互相指向
+				this.tail._next = this.head;
+				this.head._prev = this.tail;
+			}
+		};
+
+		/**
+		 * @description 链表的remove
+		 * @param {Node} node DataStruct中的Node节点
+		 */
+		LinkList.prototype.remove = function(node) {
+			if(node._next) {
+				node._next._prev = node._prev;
+			}
+			if(node._prev) {
+				node._prev._next = node._next;
+			}
+
+			node._next = null;
+			node._prev = null;
+		};
+
+		/**
+		 * @description 链表的 traversal(遍历)
+		 * @param {Function} callback 回调
+		 */
+		LinkList.prototype.traversal = function(callback) {
+			//从头节点开始往后找
+			var iterator = this.head;
+			var isEnd = false;
+			//终止函数
+			var done = function() {
+				isEnd = true;
+			};
+
+			while(iterator) {
+				callback(iterator, done);
+				iterator = iterator._next;
+				//如果已经结束
+				if(isEnd || iterator === this.head) {
+					return;
+				}
+				
+			}
+		};
+		//默认就是LinkList
+		exports.LinkList = LinkList;
+	})();
+})(window.DataStruct = {});
+(function(exports) {
 	var touchSupport = ('ontouchstart' in document || 'ontouchstart' in window);
 	//定义Class
 	var CARROUSEL_CLASS_STATE = 'dai-carrousel-state';
 	var CARROUSEL_CLASS_CONTAINER = 'dai-carrousel-container';
+	var CARROUSEL_CLASS_ITEM = 'dai-carrousel-item';
+	//动画
+	var TRANSITION_TIMING_FUNCTION = 'cubic-bezier(0.165, 0.84, 0.44, 1)';
+	//默认持续时间
+	var TRANSITION_DEFAULT_TIME = 1000;
 	/**
 	 * @constructor 构造函数
 	 * @description 图片轮播的构造函数
@@ -23,9 +140,14 @@
 	 */
 	function Carrousel(options) {
 		var self = this;
+		//当前对象的外部引用,不直接开放整个原型
+		self._carrousel = {};
+		self.api = self.initApi();
+		//每当item change时会触发这个回调
+		self.itemChangedHandler = null;
 		self.resetOptions(options);
 		self.initListeners();
-		self.api = self.initApi();
+		
 		return self._carrousel;
 	}
 	/**
@@ -33,13 +155,49 @@
 	 */
 	Carrousel.prototype.initListeners = function() {
 		var self = this;
-		//每当item change时会触发这个回调
-		self.itemChangedHandler = null;
-		self.bindTouchEvent();
 		//监听resize
 		window.addEventListener('resize', function() {
 			self.resize();
 		});
+	};
+	/**
+	 * @description 根据初始化的options,生成slider组件需要的初始参数
+	 * 包括container,state,itemsDom,
+	 * 
+	 * @param {JSON} options 配置参数,如果没有新的配置,则默认使用老配置
+	 * 
+	 * @param {JSON} 返回参数以json键值对形式
+	 */
+	Carrousel.prototype.initElemByOptions = function(options) {
+		var self = this;
+		options = options || self.options || {};
+		var mainContainer = document.querySelector(options.containerSelector);
+		
+		self.handleCustomData(mainContainer,options);
+		//找到State
+		var state = mainContainer.querySelector('.' + CARROUSEL_CLASS_STATE);
+		//找到Container
+		var container = mainContainer.querySelector('.' + CARROUSEL_CLASS_CONTAINER);
+		if(!container){
+			throw Error ('error! container is null');
+		}
+		var itemsDom = container.querySelectorAll('.'+CARROUSEL_CLASS_ITEM);
+		
+		return {
+			'state':state,
+			'container':container,
+			'itemsDom':itemsDom
+		};
+	};
+	/**
+	 * @description 自定义处理数据,可以通过重写这个方法来实现不同的类库
+	 * 比如图片轮播组件就需要重写这个方案
+	 * @param {HTMLElement} mainContainer 目标最外层容器
+	 * 自定义数据时,可以在对这个容器进行任意操作,比如新增数据等等
+	 * @param {JSON} options 配置参数,这样方便使用配置参数里面的值
+	 */
+	Carrousel.prototype.handleCustomData = function(mainContainer,options){
+		
 	};
 	/**
 	 * @description 重新设置options,可以动态变化，dom内容也可以变化
@@ -49,25 +207,18 @@
 		var self = this;
 		options = options || self.options || {};
 		self.options = options;
-		if(self.api && self.itemClickHandles) {
-			self.api.unBindItemClickHandler();
+		if(self._carrousel && self.itemClickHandles) {
+			self._carrousel.unBindItemTapHandler();
 		}
-		var mainContainer = document.querySelector(options.containerSelector);
-		var container = mainContainer,
-			state = mainContainer;
-		if(!container.classList.contains(CARROUSEL_CLASS_CONTAINER)) {
-			//找到Container
-			container = container.querySelector('.' + CARROUSEL_CLASS_CONTAINER);
+		var initParams = self.initElemByOptions(options);
+		self.container = initParams.container;
+		self.state = initParams.state;
+		self.itemsDom = initParams.itemsDom;
+		
+		var len = self.itemsDom.length;
+		if(len<=0){
+			throw Error ('error! items size is 0');
 		}
-		if(!state.classList.contains(CARROUSEL_CLASS_STATE)) {
-			//找到Container
-			state = state.querySelector('.' + CARROUSEL_CLASS_STATE);
-		}
-		self.state = state;
-		self.container = container;
-		var itemsDom = document.querySelectorAll(options.itemSelector);
-		var len = itemsDom.length;
-		self.itemsDom = itemsDom;
 		var isLoop = options.isLoop && len > 2;
 		self.isLoop = isLoop;
 		//生成一个新的链表
@@ -78,29 +229,58 @@
 		self.is3D = options.is3D || false;
 
 		for(var i = 0; i < len; i++) {
-			var tmpNode = new DataStruct.Node(itemsDom[i]);
+			var tmpNode = new DataStruct.Node(self.itemsDom[i]);
 			//需要手动设置index
 			tmpNode.index = i;
 			self.items.append(tmpNode);
 		}
-		self.itemLen = itemsDom.length;
-		//当前对象的外部引用,不直接开放整个原型
-		self._carrousel = {};
+		self.itemLen = len;
 		//当前激活的为头节点
 		self._current = self.items.head;
 		//上一个节点
 		self._prev = null;
-		//如果3d而且不循环,而且存在next,则取next
-		if(self.is3D && !isLoop && self._current._next) {
-			self._prev = self._current;
-			self._current = self._current._next;
+//		//如果3d而且不循环,而且存在next,则取next
+//		if(self.is3D && !isLoop && self._current._next) {
+//			self._prev = self._current;
+//			self._current = self._current._next;
+//		}
+		if(self.oldItemClickCallback && self._carrousel) {
+			self._carrousel.bindItemTapHandler(self.oldItemClickCallback);
 		}
-		if(self.oldItemClickCallback && self.api) {
-			self.api.bindItemClickHandler(self.oldItemClickCallback);
-		}
+		//绑定touch
+		self.bindTouchEvent();
+		self.initTimer();
 		//手动调用一次resize
 		self.resize();
 
+	};
+	/**
+	 * @description 初始化定时器
+	 */
+	Carrousel.prototype.initTimer = function() {
+		var self = this;
+		var slider = self._carrousel;
+		//是否自动轮播的定时
+		var interval = self.options.interval || 0;
+		var duration = self.options.animationDuration || TRANSITION_DEFAULT_TIME;
+		var sliderShowTimer = self.sliderShowTimer;
+		//如果有,先清除定时
+		sliderShowTimer&&window.clearTimeout(sliderShowTimer);
+		if(interval){
+			//如果存在定时
+			sliderShowTimer = window.setTimeout(function(){
+				if(!slider){
+					return ;
+				}
+				//默认1000秒
+				slider.next(duration);
+				
+				//再次轮询
+				self.initTimer();
+			},interval);
+			
+			self.sliderShowTimer = sliderShowTimer;
+		}
 	};
 	/**
 	 * @description 窗口resize事件
@@ -124,7 +304,6 @@
 				maxHeight = item.offsetHeight;
 			}
 		}
-
 		var winWith = window.innerWidth;
 		self.isPad = winWith >= 768 ? true : false;
 		//计算 perspective与container的ztransform
@@ -303,6 +482,8 @@
 		item.style.transition = transition;
 		item.style.webkitTransition = transition;
 		item.style.MozTransition = transition;
+		//默认用bezier动画
+		//transition-timing-function: cubic-bezier(0.165, 0.84, 0.44, 1);
 	};
 
 	/**
@@ -316,7 +497,7 @@
 			return;
 		}
 		var self = this;
-		var animationStr = animation || "300ms ease ";
+		var animationStr = animation || "300ms "+TRANSITION_TIMING_FUNCTION+" ";
 		var transition = isTransition ? animationStr : "";
 		if(node._prev) {
 			self.transitionItem(node._prev.data, transition);
@@ -420,7 +601,9 @@
 				self.showItemItems(self._current, true);
 
 				self.resetPosition();
-
+				
+				//这个给内部调用
+				self.innerItemChangeHandler&&self.innerItemChangeHandler(self._prev.index, self._current.index);
 				self.itemChangedHandler && self.itemChangedHandler(self._prev.index, self._current.index);
 			}
 		}
@@ -552,6 +735,7 @@
 	};
 	/**
 	 * @description 对外开放api
+	 * 确保可以链式调用
 	 */
 	Carrousel.prototype.initApi = function() {
 		var self = this;
@@ -570,7 +754,8 @@
 			} else {
 				self.bindTapEvent(dom, callback);
 			}
-
+			
+			return api;
 		};
 		//绑定监听回调
 		api.bindItemChangedHandler = function(callback) {
@@ -578,9 +763,9 @@
 			return api;
 		};
 		//解绑监听
-		api.unBindItemClickHandler = function() {
+		api.unBindItemTapHandler = function() {
 			if(!self.itemClickHandles) {
-				return;
+				return api;
 			}
 			for(var i = 0, len = self.itemClickHandles.length; i < len; i++) {
 				var tmp = self.itemClickHandles[i];
@@ -593,8 +778,8 @@
 
 			return api;
 		};
-		//bindItemClickHandler 绑定item的点击监听
-		api.bindItemClickHandler = function(callback) {
+		//bindItemTapHandler 绑定item的点击监听
+		api.bindItemTapHandler = function(callback) {
 			//持有引用,每次reset时自动监听
 			self.oldItemClickCallback = callback;
 			//确保只监听一次
@@ -629,7 +814,7 @@
 		//next 下一个
 		api.next = function(duration) {
 			duration = duration || 300;
-			var str = duration + 'ms ease ';
+			var str = duration + 'ms '+TRANSITION_TIMING_FUNCTION+' ';
 			self.transitionItems(self._prev, false, str);
 			self.move(-self.sliderWidth, false, str);
 
@@ -639,7 +824,7 @@
 		//prev 上一个
 		api.prev = function(duration) {
 			duration = duration || 300;
-			var str = duration + 'ms ease ';
+			var str = duration + 'ms '+TRANSITION_TIMING_FUNCTION;
 			self.transitionItems(self._prev, false, str);
 			self.move(self.sliderWidth, false, str);
 
