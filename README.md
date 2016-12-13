@@ -23,6 +23,7 @@
 ## 相关博文
 [网页瀑布流效果实现的几种方式](https://dailc.github.io/2016/11/13/waterflowEffect.html)
 
+[一个H5的3D滑动组件实现(兼容2D模式)](https://dailc.github.io/2016/12/13/carrouselEffect.html)
 
 ## License
 

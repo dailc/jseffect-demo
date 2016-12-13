@@ -10,7 +10,7 @@
  * bindItemChangedHandler 绑定item切换的监听回调
  * bindItemTapHandler 绑定item的tap监听
  * unBindItemTapHandler 解绑item的tap监听，会取消所有的item的tap事件以及item内部的tap
- * tap 绑定item内部某元素的tap事件，因为无法用click监听,所以单独提供了监听函数
+ * tap 绑定item内部某元素的tap事件，单独提供了tap监听函数
  * 
  * @author dailc
  * @version 1.0
@@ -111,7 +111,7 @@
 				if(isEnd || iterator === this.head) {
 					return;
 				}
-				
+
 			}
 		};
 		//默认就是LinkList
@@ -147,7 +147,7 @@
 		self.itemChangedHandler = null;
 		self.resetOptions(options);
 		self.initListeners();
-		
+
 		return self._carrousel;
 	}
 	/**
@@ -172,21 +172,21 @@
 		var self = this;
 		options = options || self.options || {};
 		var mainContainer = document.querySelector(options.containerSelector);
-		
-		self.handleCustomData(mainContainer,options);
+
+		self.handleCustomData(mainContainer, options);
 		//找到State
 		var state = mainContainer.querySelector('.' + CARROUSEL_CLASS_STATE);
 		//找到Container
 		var container = mainContainer.querySelector('.' + CARROUSEL_CLASS_CONTAINER);
-		if(!container){
-			throw Error ('error! container is null');
+		if(!container) {
+			throw Error('error! container is null');
 		}
-		var itemsDom = container.querySelectorAll('.'+CARROUSEL_CLASS_ITEM);
-		
+		var itemsDom = container.querySelectorAll('.' + CARROUSEL_CLASS_ITEM);
+
 		return {
-			'state':state,
-			'container':container,
-			'itemsDom':itemsDom
+			'state': state,
+			'container': container,
+			'itemsDom': itemsDom
 		};
 	};
 	/**
@@ -196,8 +196,8 @@
 	 * 自定义数据时,可以在对这个容器进行任意操作,比如新增数据等等
 	 * @param {JSON} options 配置参数,这样方便使用配置参数里面的值
 	 */
-	Carrousel.prototype.handleCustomData = function(mainContainer,options){
-		
+	Carrousel.prototype.handleCustomData = function(mainContainer, options) {
+
 	};
 	/**
 	 * @description 重新设置options,可以动态变化，dom内容也可以变化
@@ -214,10 +214,10 @@
 		self.container = initParams.container;
 		self.state = initParams.state;
 		self.itemsDom = initParams.itemsDom;
-		
+
 		var len = self.itemsDom.length;
-		if(len<=0){
-			throw Error ('error! items size is 0');
+		if(len <= 0) {
+			throw Error('error! items size is 0');
 		}
 		var isLoop = options.isLoop && len > 2;
 		self.isLoop = isLoop;
@@ -239,11 +239,11 @@
 		self._current = self.items.head;
 		//上一个节点
 		self._prev = null;
-//		//如果3d而且不循环,而且存在next,则取next
-//		if(self.is3D && !isLoop && self._current._next) {
-//			self._prev = self._current;
-//			self._current = self._current._next;
-//		}
+		//		//如果3d而且不循环,而且存在next,则取next
+		//		if(self.is3D && !isLoop && self._current._next) {
+		//			self._prev = self._current;
+		//			self._current = self._current._next;
+		//		}
 		if(self.oldItemClickCallback && self._carrousel) {
 			self._carrousel.bindItemTapHandler(self.oldItemClickCallback);
 		}
@@ -265,20 +265,20 @@
 		var duration = self.options.animationDuration || TRANSITION_DEFAULT_TIME;
 		var sliderShowTimer = self.sliderShowTimer;
 		//如果有,先清除定时
-		sliderShowTimer&&window.clearTimeout(sliderShowTimer);
-		if(interval){
+		sliderShowTimer && window.clearTimeout(sliderShowTimer);
+		if(interval) {
 			//如果存在定时
-			sliderShowTimer = window.setTimeout(function(){
-				if(!slider){
-					return ;
+			sliderShowTimer = window.setTimeout(function() {
+				if(!slider) {
+					return;
 				}
 				//默认1000秒
 				slider.next(duration);
-				
+
 				//再次轮询
 				self.initTimer();
-			},interval);
-			
+			}, interval);
+
 			self.sliderShowTimer = sliderShowTimer;
 		}
 	};
@@ -497,7 +497,7 @@
 			return;
 		}
 		var self = this;
-		var animationStr = animation || "300ms "+TRANSITION_TIMING_FUNCTION+" ";
+		var animationStr = animation || "300ms " + TRANSITION_TIMING_FUNCTION + " ";
 		var transition = isTransition ? animationStr : "";
 		if(node._prev) {
 			self.transitionItem(node._prev.data, transition);
@@ -601,9 +601,9 @@
 				self.showItemItems(self._current, true);
 
 				self.resetPosition();
-				
+
 				//这个给内部调用
-				self.innerItemChangeHandler&&self.innerItemChangeHandler(self._prev.index, self._current.index);
+				self.innerItemChangeHandler && self.innerItemChangeHandler(self._prev.index, self._current.index);
 				self.itemChangedHandler && self.itemChangedHandler(self._prev.index, self._current.index);
 			}
 		}
@@ -641,9 +641,6 @@
 		container.setAttribute('ontouchstart', '');
 
 		container.addEventListener("touchstart", function(e) {
-			//android中需要加上这行注释，要不然touchmove和touchend都会被fired
-			//加了这个后,会与普通的click事件冲突
-			e.preventDefault();
 			var touch = e.touches[0];
 			startX = touch.clientX;
 			startY = touch.clientY;
@@ -656,7 +653,6 @@
 
 		/*手指在屏幕上滑动，页面跟随手指移动*/
 		container.addEventListener("touchmove", function(e) {
-			// e.preventDefault();//取消此行代码的注释会在该元素内阻止页面纵向滚动
 			var touch = e.touches[0];
 			var deltaX = touch.clientX - startX;
 			var deltaY = touch.clientY - startY;
@@ -675,7 +671,16 @@
 
 		/*手指离开屏幕时，计算最终需要停留在哪一页*/
 		container.addEventListener("touchend", function(e) {
-			// e.preventDefault();//取消此行代码的注释会在该元素内阻止页面纵向滚动
+			//android普通浏览器中需要加上这行注释，要不然touchmove和touchend都会被fired
+			//加了这个后,会与普通的click事件冲突
+			var touch = e.changedTouches[0];
+			var deltaX = touch.clientX - startX;
+			var deltaY = touch.clientY - startY;
+			if(Math.abs(deltaY)<Math.abs(deltaX)) {
+				//当y轴移动小于X轴时，阻止默认事件，这样不会妨碍纵向滑动(Y>X)
+				e.preventDefault();
+			}
+			
 
 			//是否会滚
 			var isRollback = false;
@@ -754,7 +759,7 @@
 			} else {
 				self.bindTapEvent(dom, callback);
 			}
-			
+
 			return api;
 		};
 		//绑定监听回调
@@ -814,7 +819,7 @@
 		//next 下一个
 		api.next = function(duration) {
 			duration = duration || 300;
-			var str = duration + 'ms '+TRANSITION_TIMING_FUNCTION+' ';
+			var str = duration + 'ms ' + TRANSITION_TIMING_FUNCTION + ' ';
 			self.transitionItems(self._prev, false, str);
 			self.move(-self.sliderWidth, false, str);
 
@@ -824,7 +829,7 @@
 		//prev 上一个
 		api.prev = function(duration) {
 			duration = duration || 300;
-			var str = duration + 'ms '+TRANSITION_TIMING_FUNCTION;
+			var str = duration + 'ms ' + TRANSITION_TIMING_FUNCTION;
 			self.transitionItems(self._prev, false, str);
 			self.move(self.sliderWidth, false, str);
 
