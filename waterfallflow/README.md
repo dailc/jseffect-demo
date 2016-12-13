@@ -16,7 +16,7 @@
 ![](https://dailc.github.io/showDemo/staticresource/waterfallflow/demo_js_waterfallflow_1.png)
 
 #### 示例页面
-[js瀑布流效果](https://dailc.github.io/showDemo/html/waterfallflow/demo_waterfall_flow_js.html)
+[js瀑布流效果](https://dailc.github.io/showDemo/waterfallflow/demo_waterfall_flow_js.html)
 
 
 ### css3实现瀑布流效果
@@ -25,7 +25,7 @@
 ![](https://dailc.github.io/showDemo/staticresource/waterfallflow/demo_js_waterfallflow_3.png)
 
 #### 示例页面
-[css3瀑布流效果](https://dailc.github.io/showDemo/html/waterfallflow/demo_waterfall_flow_css3.html)
+[css3瀑布流效果](https://dailc.github.io/showDemo/waterfallflow/demo_waterfall_flow_css3.html)
 
 
 ## 相关博文
