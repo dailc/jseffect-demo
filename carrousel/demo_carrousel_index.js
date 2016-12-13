@@ -104,7 +104,7 @@
 		bindEvent(".btn-append-img", function() {
 			if(arrayData) {
 				arrayData.push({
-					url: "../../img/bg3.jpg"
+					url: "img/bg3.jpg"
 				});
 				//这次重置不更新options
 				resetCustom();
