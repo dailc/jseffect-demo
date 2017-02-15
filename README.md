@@ -2,6 +2,10 @@
 
 自己写的一些精选功能点效果类库，如瀑布流，JS性能分析，360加速球等效果
 
+## 360加速球效果
+使用canvas实现模拟360加速球效果，bezier曲线模拟波浪等
+
+[MORE README](https://dailc.github.io/showDemo/html/canvas/README.md)
 
 
 ## 瀑布流效果
